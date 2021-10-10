@@ -1,23 +1,23 @@
-import { ActivityIndicator, Animated, StyleSheet, View } from 'react-native'
+import { Animated, StyleSheet } from 'react-native'
+import { ActivityIndicator } from 'react-native-paper'
 import React, { useRef, useState } from 'react'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { SvgCssUri } from 'react-native-svg'
 
 export default function SplashScreen(props: { duration: number }) {
   const [state, setState] = useState({ showSplash: true })
   const fadeAnim = useRef(new Animated.Value(1)).current
-
+  const fadeTimer = 600
   new Promise((resolve) =>
     setTimeout(resolve, Math.max(props.duration - 1, 0) * 1000),
   ).then(() => {
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 1000,
+      duration: fadeTimer,
       useNativeDriver: false,
     }).start()
-    new Promise((resolve) =>
-      setTimeout(resolve, 1000),
-    ).then(() => setState({ ...state, showSplash: false }))
+    new Promise((resolve) => setTimeout(resolve, fadeTimer)).then(() =>
+      setState({ ...state, showSplash: false }),
+    )
   })
 
   if (state.showSplash)
